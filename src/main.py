@@ -51,7 +51,9 @@ def main():
     image = selected_style.get_image(answers["name"])
 
     # Save result or show if debug is enabled
-    image.show() if DEBUG else image.save(f'output/{answers["name"]}_{int(time())}.png')
+    save_to = f'output/{answers["name"]}_{int(time())}.png'
+    image.show() if DEBUG else image.save(save_to)
+    print(f"Logo saved to {save_to}")
 
 if __name__ == "__main__":
     main()

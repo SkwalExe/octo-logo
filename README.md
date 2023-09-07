@@ -24,7 +24,7 @@ I had the idea to create this project after seeing the logos made by [adi1090x](
 First, clone this repository
 
 ```bash
-git clone https://github.com/SkwalExe/octo-logohttps://github.com/SkwalExe/octo-logo
+git clone https://github.com/SkwalExe/octo-logo
 cd octo-logo
 ```
 
