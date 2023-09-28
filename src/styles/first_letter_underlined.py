@@ -1,7 +1,8 @@
 from . import underline_core
 
-name = "First letter underlined"
+display_name = "First letter underlined"
 active = True
+questions = underline_core.questions
 
-def get_image(name):
-    return underline_core.get_image(name, "first_letter")
+def get_image(answers):
+    return underline_core.get_image(answers, "first_letter")

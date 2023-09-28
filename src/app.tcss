@@ -1,0 +1,35 @@
+/* Wtf ????? Terminal CSS ??? >:0 */
+
+Wizard { 
+    padding: 1 4;
+    width: auto;
+    margin: 0 2;
+    border: solid $primary-background-lighten-3;
+}
+
+BackNextButtons { 
+    margin-top: 1;
+    layout: horizontal;
+    width: auto;
+}
+
+Screen {
+    align: center middle;
+}
+
+.full-width { 
+    width: 100%;
+}
+
+Input, Select { 
+    border: round skyblue;
+    background: transparent;
+}
+
+.invalid { 
+    border: round tomato;
+}
+
+.hidden {
+    display: none;
+}
