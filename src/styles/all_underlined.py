@@ -1,7 +1,8 @@
 from . import underline_core
 
-name = "All text underlined"
+display_name = "All text underlined"
 active = True
+questions = underline_core.questions
 
-def get_image(name):
-    return underline_core.get_image(name, "all")
+def get_image(answers):
+    return underline_core.get_image(answers, "all")
