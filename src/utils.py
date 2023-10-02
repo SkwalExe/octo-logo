@@ -3,6 +3,14 @@ from typing import Any
 import os
 import toml
 from PIL import Image, ImageDraw
+from loguru import logger
+from sys import stdout
+
+logger.remove()
+logger.add(stdout, format="[ <green>{time:HH:mm:ss}</green> ]"
+    " - <level>{level}</level> -> "
+    "<level>{message}</level>")
+
 
 def get_text_size(text, font):
     text_bbox = ImageDraw.Draw(Image.new("RGBA", (1, 1), (0, 0, 0, 0))).textbbox(

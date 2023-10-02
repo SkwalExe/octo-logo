@@ -7,10 +7,16 @@ from textual.widgets import Header, Footer, Label, LoadingIndicator
 from textual.validation import Length
 from textual import log
 from textual.events import Key
+from click_extra import extra_command, option, ExtraContext, Parameter
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 from wizard import *
+
+BASIC_INFO_QUESTIONS = [
+    TextQuestion("name", "Your project's name", [Length(1,  failure_description="Your project's name cannot be blank")], "super-octo-project" ),
+    SelectQuestion("style", "Logo Style", style_names, "first_letter_underlined")
+]
 
 class OctoLogoApp(App):
     BINDINGS = [
@@ -70,19 +76,42 @@ class OctoLogoApp(App):
         yield Footer()
 
         basic_info_wizard = Wizard(id="basic_info_wizard")
-        basic_info_wizard.questions = [
-            TextQuestion("name", "Your project's name", [Length(1,  failure_description="Your project's name cannot be blank")], "super-octo-project" ),
-            SelectQuestion("style", "Logo Style", style_names, "first_letter_underlined")
-        ]
+        basic_info_wizard.questions = BASIC_INFO_QUESTIONS
         basic_info_wizard.title = "Basic Information"
         yield basic_info_wizard
         yield self.loading_wid
 
-def main():
 
-    app = OctoLogoApp()
-    app.run()
-    quit(0)
+def disable_ansi(ctx: ExtraContext, param: Parameter, val: bool):
+    ctx.color = not val
+    
+    # We must return the value for the main function no_ansi parameter not to be None
+    return val
+
+@extra_command(params=[])
+@option("-t", "--no-tui", is_flag=True, help="Dont use the Textual Terminal User Interface")
+def main(no_tui: bool):
+    use_tui = not no_tui
+
+    if use_tui:
+        # If the tui is enabled, run the textual app
+        app = OctoLogoApp()
+        app.run()
+        quit(0)
+    else:
+        # If the tui is disabled, do everything without textual
+        answers = dict()
+
+        answers.update(inq_ask(BASIC_INFO_QUESTIONS))
+        answers.update(inq_ask(styles[answers['style']].module.questions))
+
+        style = styles[answers['style']].module
+        result = style.get_image(answers)
+        save_to = f'output/{answers["name"]}_{int(time())}.png'
+        
+        result.save(save_to)
+        logger.success(f"Image saved to : {save_to}")
+        
 
 if __name__ == "__main__":
     main()
