@@ -1,3 +1,4 @@
+from utils import logger
 from textual import log
 from typing import Any
 from textual.validation import Validator
@@ -6,7 +7,7 @@ from textual.validation import ValidationResult
 from textual.reactive import reactive
 from textual.message import Message
 from textual import on
-
+import inquirer as inq
 
 class QuestionBase():
     name: str
@@ -41,11 +42,6 @@ class TextQuestion(QuestionBase):
         _input.border_title = self.label
         _input.value = self.default_value
         return _input
-
-
-def get_value_by_name_from_option_list(option_list, text) -> Any:
-    return filter(lambda x: x[0] == text, option_list).__next__()[1]
-
 
 class SelectQuestion(QuestionBase):
     options: list
@@ -202,3 +198,29 @@ class Wizard(Static):
         # If the first question has just been selected then disable
         # the "Back" button since there arent any questions before
         self.query_one("#back").disabled = self.question_index == 0
+
+def validate_text_question(question: SelectQuestion | TextQuestion, value: str) -> bool:
+    for validator in question.validators:
+        validation = validator.validate(value)
+        if not validation.is_valid:
+            logger.error(validation.failure_descriptions[0])
+            return False
+    
+    return True
+
+def inq_ask(questions: list[SelectQuestion | TextQuestion]) -> dict[str, Any]:
+    answers = dict()
+
+    for question in questions:
+        if isinstance(question, SelectQuestion):
+            answers[question.name] = inq.list_input(question.label, choices=question.options, default=question.default_value)
+        elif isinstance(question, TextQuestion):
+            while True:
+                temp = inq.text(question.label, default=question.default_value)
+                if not validate_text_question(question, temp):
+                    continue
+
+                answers[question.name] = temp
+                break
+
+    return answers
