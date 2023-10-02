@@ -9,7 +9,7 @@ from textual import log
 from textual.events import Key
 from click_extra import extra_command, option, ExtraContext, Parameter
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 from wizard import *
 
