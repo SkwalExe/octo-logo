@@ -23,7 +23,7 @@ def get_text_size(text, font):
 
 
 def get_font_height(font):
-    return font.getsize("azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789")[1]
+    return font.getbbox("azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789")[3]
 
 
 def remove_ext(filename):
