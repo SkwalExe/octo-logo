@@ -1,12 +1,11 @@
-from wizard import *
-from textual.validation import *
-
+from wizard import TextQuestion, SelectQuestion
+from textual.validation import Number
+from utils import font_list, color_scheme_names, FONTS_DIR, color_schemes, os, get_font_height, get_text_size
 from PIL import Image, ImageDraw, ImageFont, ImageColor
-
 import sys
+
 sys.path.append("..")
 
-from utils import *
 
 questions = [
     SelectQuestion("font", "Select a font", [(font, font) for font in font_list], "Iosevka-Nerd-Font-Complete.ttf"),
@@ -20,10 +19,11 @@ questions = [
 
 active = False
 
+
 def get_image(answers, type):
-    if not type in ['all', 'first_letter']:
+    if type not in ['all', 'first_letter']:
         raise ValueError("Invalid type")
-    
+
     # Load the selected font
     font_size = 500
     font = ImageFont.truetype(os.path.join(FONTS_DIR, answers["font"]), font_size)
@@ -63,8 +63,13 @@ def get_image(answers, type):
 
     # The end of the underline depends on the type
     # If the type is 'all', the underline will go from the start of the first letter to the end of the text
-    # If the type is 'first_letter', the underline will go from the start of the first letter to the end of the first letter
-    underline_end_x = int(answers['additionnal_bar_width']) + (first_letter_bbox[2] if type == 'first_letter' else int(answers['padding_x']) + text_width)
+    # If the type is 'first_letter', the underline will go
+    # from the start of the first letter to the end of the first letter
+    if type == 'first_letter':
+        underline_end_x = int(answers['additionnal_bar_width']) + (first_letter_bbox[2])
+    else:
+        underline_end_x = int(int(answers['padding_x']) + text_width)
+
     underline_end_y = underline_start_y + int(answers['bar_size'])
 
     underline_start = (underline_start_x, underline_start_y)
@@ -74,7 +79,6 @@ def get_image(answers, type):
 
     # Underline the first letter
     draw.rectangle(underline_pos, fill=accent, width=answers['bar_size'])
-
 
     # Draw the text
     draw.text(
@@ -93,5 +97,5 @@ def get_image(answers, type):
         fill=accent,
         anchor=anchor_type,
     )
-    
+
     return image
