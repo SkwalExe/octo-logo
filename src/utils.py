@@ -7,7 +7,9 @@ from loguru import logger
 from sys import stdout
 
 logger.remove()
-logger.add(stdout, format="[ <green>{time:HH:mm:ss}</green> ]"
+logger.add(
+    stdout,
+    format="[ <green>{time:HH:mm:ss}</green> ]"
     " - <level>{level}</level> -> "
     "<level>{message}</level>")
 
@@ -32,6 +34,7 @@ def remove_ext(filename):
     """
     return filename.split(".")[0]
 
+
 class Style():
     display_name: str
     module: Any
@@ -40,17 +43,19 @@ class Style():
         self.display_name = display_name
         self.module = module
 
-    
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FONTS_DIR = os.path.join(BASE_DIR, "fonts")
 COLORS_DIR = os.path.join(BASE_DIR, "colors")
 
+
 # Get all the fonts in the fonts directory
 def get_font_list() -> list[str]:
     return os.listdir(FONTS_DIR)
 
+
 font_list = get_font_list()
+
 
 # Get all the color schemes in the colors directory
 # keep only files with the .toml extension
@@ -68,8 +73,11 @@ def get_color_schemes() -> dict[str, dict[str, str]]:
 
     return colors
 
+
 color_schemes = get_color_schemes()
-color_scheme_names: dict[str, str] = [(color_schemes[color_scheme]['name'], color_scheme) for color_scheme in color_schemes]
+color_scheme_names: dict[str, str] = [
+    (color_schemes[color_scheme]['name'], color_scheme) for color_scheme in color_schemes]
+
 
 def get_styles() -> dict[str, Style]:
     """

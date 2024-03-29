@@ -1,22 +1,26 @@
 import os
 from time import time
-from utils import *
-
+from utils import BASE_DIR, style_names, styles, logger
+from wizard import TextQuestion, SelectQuestion, Wizard, inq_ask
 from textual.app import App
 from textual.widgets import Header, Footer, Label, LoadingIndicator
 from textual.validation import Length
-from textual import log
+from PIL import Image
 from textual.events import Key
 from click_extra import extra_command, option, ExtraContext, Parameter
+# from textual import log
 
 VERSION = "1.1.1"
 
-from wizard import *
-
 BASIC_INFO_QUESTIONS = [
-    TextQuestion("name", "Your project's name", [Length(1,  failure_description="Your project's name cannot be blank")], "super-octo-project" ),
+    TextQuestion(
+        "name",
+        "Your project's name",
+        [Length(1,  failure_description="Your project's name cannot be blank")],
+        "super-octo-project"),
     SelectQuestion("style", "Logo Style", style_names, "first_letter_underlined")
 ]
+
 
 class OctoLogoApp(App):
     BINDINGS = [
@@ -38,7 +42,6 @@ class OctoLogoApp(App):
         elif event.key == "v" and self.finished:
             self.result.show()
 
-
     def on_wizard_finished(self, message: Wizard.Finished):
         # Get the wizard answers and the wizard's id
         self.answers.update(message.answers)
@@ -53,7 +56,7 @@ class OctoLogoApp(App):
             style_wizard.questions = styles[self.answers['style']].module.questions
             style_wizard.title = "Style Settings"
             self.mount(style_wizard)
-        # When the style-specific wizard is finished, create the image and save it 
+        # When the style-specific wizard is finished, create the image and save it
         elif finished_wizard_id == "style_wizard":
             style = styles[self.answers['style']].module
             self.result = style.get_image(self.answers)
@@ -64,10 +67,12 @@ class OctoLogoApp(App):
     # Final message
     def final_message(self):
         self.loading_wid.add_class("hidden")
-        self.mount(Label(f"Logo saved to [bold]{self.save_to}[/bold].\n[blue blink]-> Press v to view the result[/blue blink]\n[red]Press enter to quit[/red]"))
+        self.mount(Label(
+            f"Logo saved to [bold]{self.save_to}[/bold].\n"
+            f"[blue blink]-> Press v to view the result[/blue blink]\n"
+            f"[red]Press enter to quit[/red]"))
         self.result.save(self.save_to)
         self.finished = True
-            
 
     def compose(self):
         self.app.title = f"Octo Logo v{VERSION}"
@@ -84,9 +89,10 @@ class OctoLogoApp(App):
 
 def disable_ansi(ctx: ExtraContext, param: Parameter, val: bool):
     ctx.color = not val
-    
+
     # We must return the value for the main function no_ansi parameter not to be None
     return val
+
 
 @extra_command(params=[])
 @option("-t", "--no-tui", is_flag=True, help="Dont use the Textual Terminal User Interface")
@@ -108,10 +114,10 @@ def main(no_tui: bool):
         style = styles[answers['style']].module
         result = style.get_image(answers)
         save_to = f'output/{answers["name"]}_{int(time())}.png'
-        
+
         result.save(save_to)
         logger.success(f"Image saved to : {save_to}")
-        
+
 
 if __name__ == "__main__":
     main()
