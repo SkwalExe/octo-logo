@@ -42,18 +42,14 @@ python3 src/main.py
 
 # Styles
 
-### Style 1 - First letter underlined
+### Style 1 - First letters underlined
+
+> The number of letters to underline is customizable since version 2.0.0
 
 <p align="center">
   <img src="assets/style1.png">
 </p>
 
-
-### Style 2 - All letters underlined
-
-<p align="center">
-  <img src="assets/style2.png">
-</p>
 
 # Color schemes
 
