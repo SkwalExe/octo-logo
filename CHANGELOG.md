@@ -1,4 +1,4 @@
-# v2.0.0 - Unreleased
+# v2.0.0 - 2024-03-29
 
 ### Added
 - Custom number of letters to underline
