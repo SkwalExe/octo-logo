@@ -1,7 +1,13 @@
-# v1.1.1 - Unreleased
+# v2.0.0 - Unreleased
+
+### Added
+- Custom number of letters to underline
+
+### Fixed
+- Error when entering decimal numbers
 
 ### Dependencies
-- pillow : `9.5.0` -> `10.1.0`
+- pillow : `9.5.0` -> `10.2.0`
 - click-extra : `4.6.0` -> `4.7.2`
 
 # v1.1.0 - 2023-10-02

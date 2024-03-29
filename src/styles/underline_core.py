@@ -10,6 +10,7 @@ sys.path.append("..")
 questions = [
     SelectQuestion("font", "Select a font", [(font, font) for font in font_list], "Iosevka-Nerd-Font-Complete.ttf"),
     SelectQuestion("color", "Select a color scheme", color_scheme_names, "adi1090x"),
+    TextQuestion("underline_count", "Lettrs to undrline", [Number(minimum=0)], "1", "1"),
     TextQuestion("padding_x", "Padding x (px)", [Number()], "200", "200"),
     TextQuestion("padding_y", "Padding y (px)", [Number()], "20", "20"),
     TextQuestion("gap", "Gap between text and bar (px)", [Number()], "20", "20"),
@@ -20,14 +21,12 @@ questions = [
 active = False
 
 
-def get_image(answers, type):
-    if type not in ['all', 'first_letter']:
-        raise ValueError("Invalid type")
-
+def get_image(answers):
     # Load the selected font
     font_size = 500
     font = ImageFont.truetype(os.path.join(FONTS_DIR, answers["font"]), font_size)
 
+    # Set the colors
     background = ImageColor.getrgb(color_schemes[answers['color']]["background"])
     text = ImageColor.getrgb(color_schemes[answers['color']]["text"])
     accent = ImageColor.getrgb(color_schemes[answers['color']]["accent"])
@@ -44,41 +43,37 @@ def get_image(answers, type):
     image = Image.new("RGB", (image_width, image_height), background)
     draw = ImageDraw.Draw(image)
 
-    # Get the anchor position and type
+    # Get the text anchor type and position on the image (where the text will be drawn)
+    # LM = Left/Middle
     anchor_type = "lm"
     anchor_x = int(answers['padding_x'])
     anchor_y = image_height / 2 - (int(answers['gap']) + int(answers['bar_size'])) / 2
 
     anchor_pos = (anchor_x, anchor_y)
 
-    # Get the bbox of the first letter
+    if int(answers['underline_count']) > 0:
+        # Get the bbox of the first n letter to underline
+        first_letters_bbox = draw.textbbox(
+            anchor_pos,
+            answers['name'][:int(answers['underline_count'])],
+            font=font,
+            anchor=anchor_type)
 
-    first_letter_bbox = draw.textbbox(
-        anchor_pos, answers['name'][0], font=font, anchor=anchor_type
-    )
+        # Get the underline position
+        underline_start_x = first_letters_bbox[0] - int(answers['additionnal_bar_width'])
+        underline_start_y = first_letters_bbox[3] + int(answers['gap'])
 
-    # Get the underline position
-    underline_start_x = first_letter_bbox[0] - int(answers['additionnal_bar_width'])
-    underline_start_y = first_letter_bbox[3] + int(answers['gap'])
+        underline_end_x = int(answers['additionnal_bar_width']) + first_letters_bbox[2]
 
-    # The end of the underline depends on the type
-    # If the type is 'all', the underline will go from the start of the first letter to the end of the text
-    # If the type is 'first_letter', the underline will go
-    # from the start of the first letter to the end of the first letter
-    if type == 'first_letter':
-        underline_end_x = int(answers['additionnal_bar_width']) + (first_letter_bbox[2])
-    else:
-        underline_end_x = int(int(answers['padding_x']) + text_width)
+        underline_end_y = underline_start_y + int(answers['bar_size'])
 
-    underline_end_y = underline_start_y + int(answers['bar_size'])
+        underline_start = (underline_start_x, underline_start_y)
+        underline_end = (underline_end_x, underline_end_y)
 
-    underline_start = (underline_start_x, underline_start_y)
-    underline_end = (underline_end_x, underline_end_y)
+        underline_pos = [underline_start, underline_end]
 
-    underline_pos = [underline_start, underline_end]
-
-    # Underline the first letter
-    draw.rectangle(underline_pos, fill=accent, width=answers['bar_size'])
+        # Underline the first letter
+        draw.rectangle(underline_pos, fill=accent, width=answers['bar_size'])
 
     # Draw the text
     draw.text(
