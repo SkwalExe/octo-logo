@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png">
+  <img src="https://raw.githubusercontent.com/SkwalExe/octo-logo/main/assets/logo.png">
 </p>
 
 <p align="center">
@@ -47,7 +47,7 @@ python3 src/main.py
 > The number of letters to underline is customizable since version 2.0.0
 
 <p align="center">
-  <img src="assets/style1.png">
+  <img src="https://raw.githubusercontent.com/SkwalExe/octo-logo/main/assets/style1.png">
 </p>
 
 
@@ -56,19 +56,19 @@ python3 src/main.py
 ### Color scheme 1 - adi1090x's color scheme
 
 <p align="center">
-  <img src="assets/color1.png">
+  <img src="https://raw.githubusercontent.com/SkwalExe/octo-logo/main/assets/color1.png">
 </p>
 
 ### Color scheme 2 - Cherry
 
 <p align="center">
-  <img src="assets/color2.png">
+  <img src="https://raw.githubusercontent.com/SkwalExe/octo-logo/main/assets/color2.png">
 </p>
 
 ### Color scheme 3 - Midnight Abyss
 
 <p align="center">
-  <img src="assets/color3.png">
+  <img src="https://raw.githubusercontent.com/SkwalExe/octo-logo/main/assets/color3.png">
 </p>
 
 # Development
