@@ -1,3 +1,8 @@
+# v3.0.0 - 2024-05-28
+
+### Changed
+- Prepare project for publishing to PyPI
+
 # v2.0.0 - 2024-03-29
 
 ### Added
