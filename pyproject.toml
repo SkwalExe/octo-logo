@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "octologo"
+version = "3.0.0"
+description = "Simple program that generates a logo for your open source projects."
+authors = [{name = "Leopold Koprivnik", email = "skwal@etik.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
+requires-python = ">=3.9"
+dependencies = [ 
+    "pillow==10.2.0",
+    "inquirer==3.1.3",
+    "toml==0.10.2",
+    "importlib==1.0.4",
+    "textual==0.38.1",
+    "click-extra==4.7.2",
+    "loguru==0.7.2"
+]
+
+[project.urls]
+Home = "https://github.com/SkwalExe/octo-logo"
+
+[project.scripts]
+octologo = "octologo.__main__:main"
+
+[tool.pdm]
+distribution = true
+

@@ -1,6 +1,6 @@
-from wizard import TextQuestion, SelectQuestion
+from octologo.wizard import TextQuestion, SelectQuestion
 from textual.validation import Number
-from utils import font_list, color_scheme_names, FONTS_DIR, color_schemes, os, get_font_height, get_text_size
+from octologo.utils import font_list, color_scheme_names, FONTS_DIR, color_schemes, os, get_font_height, get_text_size
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import sys
 

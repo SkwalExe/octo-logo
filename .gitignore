@@ -1,4 +1,6 @@
 # Byte-compiled / optimized / DLL files
+.pdm-python
+
 __pycache__/
 *.py[cod]
 *$py.class

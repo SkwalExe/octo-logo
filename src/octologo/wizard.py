@@ -1,4 +1,4 @@
-from utils import logger
+from octologo.utils import logger
 from typing import Any
 from textual.validation import Validator
 from textual.widgets import Input, Select, Static, Button, Label

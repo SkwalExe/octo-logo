@@ -44,7 +44,7 @@ class Style():
         self.module = module
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FONTS_DIR = os.path.join(BASE_DIR, "fonts")
 COLORS_DIR = os.path.join(BASE_DIR, "colors")
 
@@ -85,12 +85,12 @@ def get_styles() -> dict[str, Style]:
     """
     # Load the styles in the styles directory
     styles = dict()
-    for style in os.listdir(os.path.join(BASE_DIR, "src", "styles")):
+    for style in os.listdir(os.path.join(BASE_DIR, "styles")):
         # Only keep .py files
         if not style.endswith(".py"):
             continue
 
-        module = import_module(f"styles.{remove_ext(style)}")
+        module = import_module(f"octologo.styles.{remove_ext(style)}")
 
         # Only keep files with the active attribute set to True
         # This allows to ignore some scripts that may be in the styles directory

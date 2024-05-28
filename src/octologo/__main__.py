@@ -1,35 +1,40 @@
 import os
 from time import time
-from utils import BASE_DIR, style_names, styles, logger
-from wizard import TextQuestion, SelectQuestion, Wizard, inq_ask
+from octologo.utils import BASE_DIR, style_names, styles, logger
+from octologo import __version__
+from octologo.wizard import TextQuestion, SelectQuestion, Wizard, inq_ask
 from textual.app import App
 from textual.widgets import Header, Footer, Label, LoadingIndicator
 from textual.validation import Length
 from PIL import Image
 from textual.events import Key
 from click_extra import extra_command, option, ExtraContext, Parameter
-# from textual import log
 
-VERSION = "1.1.1"
+# from textual import log
 
 BASIC_INFO_QUESTIONS = [
     TextQuestion(
         "name",
         "Your project's name",
-        [Length(1,  failure_description="Your project's name cannot be blank")],
-        "super-octo-project"),
-    SelectQuestion("style", "Logo Style", style_names, "first_letter_underlined")
+        [Length(1, failure_description="Your project's name cannot be blank")],
+        "super-octo-project",
+    ),
+    SelectQuestion("style", "Logo Style", style_names, "first_letter_underlined"),
 ]
+
+
+def get_output_filaname(project_name):
+    return f"octologo_{project_name}_{int(time())}.png"
 
 
 class OctoLogoApp(App):
     BINDINGS = [
         ("ctrl+q", "quit", "Quit"),
-        ("ctrl+t", "toggle_dark", "Toggle Dark Mode")
+        ("ctrl+t", "toggle_dark", "Toggle Dark Mode"),
     ]
     answers = dict()
 
-    CSS_PATH = os.path.join(BASE_DIR, "src", "app.tcss")
+    CSS_PATH = os.path.join(BASE_DIR, "app.tcss")
     TITLE = "Octo Logo Wizard"
     finished: bool = False
     save_to: str | None = None
@@ -53,29 +58,32 @@ class OctoLogoApp(App):
         # When the basic info wizard is finished, mount the style-specific wizard
         if finished_wizard_id == "basic_info_wizard":
             style_wizard = Wizard(id="style_wizard")
-            style_wizard.questions = styles[self.answers['style']].module.questions
+            style_wizard.questions = styles[self.answers["style"]].module.questions
             style_wizard.title = "Style Settings"
             self.mount(style_wizard)
         # When the style-specific wizard is finished, create the image and save it
         elif finished_wizard_id == "style_wizard":
-            style = styles[self.answers['style']].module
+            style = styles[self.answers["style"]].module
             self.result = style.get_image(self.answers)
-            self.save_to = f'output/{self.answers["name"]}_{int(time())}.png'
+            self.save_to = get_output_filaname(self.answers["name"])
             self.loading_wid.remove_class("hidden")
             self.set_timer(2, self.final_message)
 
     # Final message
     def final_message(self):
         self.loading_wid.add_class("hidden")
-        self.mount(Label(
-            f"Logo saved to [bold]{self.save_to}[/bold].\n"
-            f"[blue blink]-> Press v to view the result[/blue blink]\n"
-            f"[red]Press enter to quit[/red]"))
+        self.mount(
+            Label(
+                f"Logo saved to [bold]{self.save_to}[/bold].\n"
+                f"[blue blink]-> Press v to view the result[/blue blink]\n"
+                f"[red]Press enter to quit[/red]"
+            )
+        )
         self.result.save(self.save_to)
         self.finished = True
 
     def compose(self):
-        self.app.title = f"Octo Logo v{VERSION}"
+        self.app.title = f"Octo Logo v{__version__}"
 
         yield Header(show_clock=True)
         yield Footer()
@@ -95,7 +103,9 @@ def disable_ansi(ctx: ExtraContext, param: Parameter, val: bool):
 
 
 @extra_command(params=[])
-@option("-t", "--no-tui", is_flag=True, help="Dont use the Textual Terminal User Interface")
+@option(
+    "-t", "--no-tui", is_flag=True, help="Dont use the Textual Terminal User Interface"
+)
 def main(no_tui: bool):
     use_tui = not no_tui
 
@@ -109,11 +119,11 @@ def main(no_tui: bool):
         answers = dict()
 
         answers.update(inq_ask(BASIC_INFO_QUESTIONS))
-        answers.update(inq_ask(styles[answers['style']].module.questions))
+        answers.update(inq_ask(styles[answers["style"]].module.questions))
 
-        style = styles[answers['style']].module
+        style = styles[answers["style"]].module
         result = style.get_image(answers)
-        save_to = f'output/{answers["name"]}_{int(time())}.png'
+        save_to = get_output_filaname(answers["name"])
 
         result.save(save_to)
         logger.success(f"Image saved to : {save_to}")
