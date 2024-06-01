@@ -19,25 +19,35 @@ I had the idea to create this project after seeing the logos made by [adi1090x](
 
 - [adi1090x's GitHub](https://github.com/adi1090x)
 
-# Usage
+# How to install 📥
 
-First, clone this repository
+You can install octologo easily with pip:
 
 ```bash
-git clone https://github.com/SkwalExe/octo-logo
-cd octo-logo
+python3 -m pip install octologo
 ```
 
-Then, install the dependencies
+You can also use [pipx](https://pypa.github.io/pipx/):
 
 ```bash
-pip3 install -r requirements.txt
+pipx install octologo
 ```
 
-And finally, launch the program and follow the instructions
+Now, start the app with:
 
 ```bash
-python3 src/main.py
+octologo
+```
+
+> [!CAUTION]
+> If the command is not found after installtion, you must add  `~/.local/bin` to your path. You can do this by adding `export PATH=$PATH:~/.local/bin` to your `.bashrc` or `.zshrc` file.
+
+```bash
+# For bash
+echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
+
+# For zsh
+echo 'export PATH=$PATH:~/.local/bin' >> ~/.zshrc
 ```
 
 # Styles
