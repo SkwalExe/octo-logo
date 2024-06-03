@@ -30,3 +30,7 @@ octologo = "octologo.__main__:main"
 [tool.pdm]
 distribution = true
 
+[tool.pdm.dev-dependencies]
+dev = [
+    "ruff>=0.4.7",
+]
