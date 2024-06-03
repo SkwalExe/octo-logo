@@ -34,3 +34,7 @@ distribution = true
 dev = [
     "ruff>=0.4.7",
 ]
+
+[tool.pdm.scripts]
+format = "ruff format"
+format-check = "ruff format --check"
