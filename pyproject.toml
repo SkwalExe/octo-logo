@@ -38,3 +38,5 @@ dev = [
 [tool.pdm.scripts]
 format = "ruff format"
 format-check = "ruff format --check"
+lint = "ruff check --fix --show-fixes"
+lint-check = "ruff check"
