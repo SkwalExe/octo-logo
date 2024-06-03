@@ -1,14 +1,17 @@
 import os
+from collections.abc import Generator
 from time import time
-from octologo.utils import BASE_DIR, style_names, styles, logger
-from octologo import __version__
-from octologo.wizard import TextQuestion, SelectQuestion, Wizard, inq_ask
-from textual.app import App
-from textual.widgets import Header, Footer, Label, LoadingIndicator
-from textual.validation import Length
+
+from click_extra import ExtraContext, Parameter, extra_command, option
 from PIL import Image
+from textual.app import App
 from textual.events import Key
-from click_extra import extra_command, option, ExtraContext, Parameter
+from textual.validation import Length
+from textual.widgets import Footer, Header, Label, LoadingIndicator
+
+from octologo import __version__
+from octologo.utils import BASE_DIR, logger, style_names, styles
+from octologo.wizard import SelectQuestion, TextQuestion, Wizard, inq_ask
 
 # from textual import log
 
@@ -23,7 +26,7 @@ BASIC_INFO_QUESTIONS = [
 ]
 
 
-def get_output_filaname(project_name):
+def get_output_filaname(project_name: str) -> str:
     return f"octologo_{project_name}_{int(time())}.png"
 
 
@@ -41,13 +44,13 @@ class OctoLogoApp(App):
     result: Image.Image | None = None
     loading_wid: LoadingIndicator = LoadingIndicator(classes="hidden")
 
-    async def on_key(self, event: Key):
+    async def on_key(self, event: Key) -> None:
         if event.key == "enter" and self.finished:
             await self.action_quit()
         elif event.key == "v" and self.finished:
             self.result.show()
 
-    def on_wizard_finished(self, message: Wizard.Finished):
+    def on_wizard_finished(self, message: Wizard.Finished) -> None:
         # Get the wizard answers and the wizard's id
         self.answers.update(message.answers)
         finished_wizard_id = message.wizard_id
@@ -70,7 +73,7 @@ class OctoLogoApp(App):
             self.set_timer(2, self.final_message)
 
     # Final message
-    def final_message(self):
+    def final_message(self) -> None:
         self.loading_wid.add_class("hidden")
         self.mount(
             Label(
@@ -82,7 +85,7 @@ class OctoLogoApp(App):
         self.result.save(self.save_to)
         self.finished = True
 
-    def compose(self):
+    def compose(self) -> Generator:
         self.app.title = f"Octo Logo v{__version__}"
 
         yield Header(show_clock=True)
@@ -95,7 +98,7 @@ class OctoLogoApp(App):
         yield self.loading_wid
 
 
-def disable_ansi(ctx: ExtraContext, param: Parameter, val: bool):
+def disable_ansi(ctx: ExtraContext, param: Parameter, val: bool) -> bool:
     ctx.color = not val
 
     # We must return the value for the main function no_ansi parameter not to be None
@@ -106,7 +109,7 @@ def disable_ansi(ctx: ExtraContext, param: Parameter, val: bool):
 @option(
     "-t", "--no-tui", is_flag=True, help="Dont use the Textual Terminal User Interface"
 )
-def main(no_tui: bool):
+def main(no_tui: bool) -> None:
     use_tui = not no_tui
 
     if use_tui:

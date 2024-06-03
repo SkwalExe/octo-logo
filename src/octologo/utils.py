@@ -1,10 +1,11 @@
-from importlib import import_module
-from typing import Any
 import os
-import toml
-from PIL import Image, ImageDraw
-from loguru import logger
+from importlib import import_module
 from sys import stdout
+from typing import Any
+
+import toml
+from loguru import logger
+from PIL import Image, ImageDraw
 
 logger.remove()
 logger.add(
@@ -15,7 +16,7 @@ logger.add(
 )
 
 
-def get_text_size(text, font):
+def get_text_size(text, font) -> tuple[int, int]:
     text_bbox = ImageDraw.Draw(Image.new("RGBA", (1, 1), (0, 0, 0, 0))).textbbox(
         (0, 0), text, font=font
     )
@@ -31,7 +32,7 @@ def get_font_height(font):
     )[3]
 
 
-def remove_ext(filename):
+def remove_ext(filename) -> str:
     """
     Remove the extension from a filename if there is one
     """

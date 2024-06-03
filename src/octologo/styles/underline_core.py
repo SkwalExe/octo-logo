@@ -1,16 +1,18 @@
-from octologo.wizard import TextQuestion, SelectQuestion
-from textual.validation import Number
+import sys
+
 from octologo.utils import (
-    font_list,
-    color_scheme_names,
     FONTS_DIR,
+    color_scheme_names,
     color_schemes,
-    os,
+    font_list,
     get_font_height,
     get_text_size,
+    os,
 )
-from PIL import Image, ImageDraw, ImageFont, ImageColor
-import sys
+from octologo.wizard import SelectQuestion, TextQuestion
+from PIL import Image, ImageColor, ImageDraw, ImageFont
+from PIL.Image import Image as ImageClass
+from textual.validation import Number
 
 sys.path.append("..")
 
@@ -38,7 +40,7 @@ questions = [
 active = False
 
 
-def get_image(answers):
+def get_image(answers) -> ImageClass:
     # Load the selected font
     font_size = 500
     font = ImageFont.truetype(os.path.join(FONTS_DIR, answers["font"]), font_size)
