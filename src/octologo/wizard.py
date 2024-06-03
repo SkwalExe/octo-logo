@@ -10,7 +10,7 @@ import inquirer as inq
 # from textual import log
 
 
-class QuestionBase():
+class QuestionBase:
     name: str
     label: str
 
@@ -32,7 +32,7 @@ class TextQuestion(QuestionBase):
         label: str,
         validators: list[Validator] | None = None,
         placeholder: str = "",
-        default_value: str = ""
+        default_value: str = "",
     ) -> None:
         super().__init__(name, label)
         self.validators = validators
@@ -40,7 +40,12 @@ class TextQuestion(QuestionBase):
         self.default_value = default_value
 
     def as_widget(self):
-        _input = Input(classes="full-width", id=self.name, placeholder=self.placeholder, validators=self.validators)
+        _input = Input(
+            classes="full-width",
+            id=self.name,
+            placeholder=self.placeholder,
+            validators=self.validators,
+        )
         _input.border_title = self.label
         _input.value = self.default_value
         return _input
@@ -52,11 +57,7 @@ class SelectQuestion(QuestionBase):
     default_value: Any | None = None
 
     def __init__(
-        self,
-        name: str,
-        label: str,
-        options: list,
-        default_value: str | None = None
+        self, name: str, label: str, options: list, default_value: str | None = None
     ) -> None:
         super().__init__(name, label)
         self.options = options
@@ -68,7 +69,8 @@ class SelectQuestion(QuestionBase):
             id=self.name,
             options=self.options,
             allow_blank=False,
-            value=self.default_value)
+            value=self.default_value,
+        )
 
         _select.border_title = self.label
 
@@ -144,7 +146,7 @@ class Wizard(Static):
         self.handle_validation_result(message.validation_result)
 
         # When the input is submitted, if it is valid then go to the next question
-        if (message.validation_result.is_valid):
+        if message.validation_result.is_valid:
             self.question_index += 1
 
     def on_select_changed(self, message: Select.Changed):
@@ -173,7 +175,9 @@ class Wizard(Static):
             yield wid
 
         # The error message below inputs if there are any errors
-        self.input_message = Label("This is the input error message", id="input_message", classes="hidden")
+        self.input_message = Label(
+            "This is the input error message", id="input_message", classes="hidden"
+        )
         self.input_message.styles.color = "tomato"
         self.input_message.styles.max_width = "100%"
         yield self.input_message
@@ -186,7 +190,6 @@ class Wizard(Static):
         self.question_index = 0
 
     def watch_question_index(self):
-
         # Remove the selected class from the previous shown input if any
         if self.selected_question is not None:
             self.selected_question.add_class("hidden")
@@ -198,10 +201,14 @@ class Wizard(Static):
             return
 
         # Put the question index in the border title
-        self.border_title = f"{self.title} [{self.question_index + 1}/{len(self.questions)}]"
+        self.border_title = (
+            f"{self.title} [{self.question_index + 1}/{len(self.questions)}]"
+        )
 
         # Show the input corresponding to the new value of self.question_index
-        self.selected_question = self.query_one(f"#{self.questions[self.question_index].name}")
+        self.selected_question = self.query_one(
+            f"#{self.questions[self.question_index].name}"
+        )
         self.selected_question.remove_class("hidden")
         self.selected_question.focus()
 
@@ -226,9 +233,8 @@ def inq_ask(questions: list[SelectQuestion | TextQuestion]) -> dict[str, Any]:
     for question in questions:
         if isinstance(question, SelectQuestion):
             answers[question.name] = inq.list_input(
-                question.label,
-                choices=question.options,
-                default=question.default_value)
+                question.label, choices=question.options, default=question.default_value
+            )
 
         elif isinstance(question, TextQuestion):
             while True:

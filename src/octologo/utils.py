@@ -11,7 +11,8 @@ logger.add(
     stdout,
     format="[ <green>{time:HH:mm:ss}</green> ]"
     " - <level>{level}</level> -> "
-    "<level>{message}</level>")
+    "<level>{message}</level>",
+)
 
 
 def get_text_size(text, font):
@@ -25,7 +26,9 @@ def get_text_size(text, font):
 
 
 def get_font_height(font):
-    return font.getbbox("azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789")[3]
+    return font.getbbox(
+        "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789"
+    )[3]
 
 
 def remove_ext(filename):
@@ -35,7 +38,7 @@ def remove_ext(filename):
     return filename.split(".")[0]
 
 
-class Style():
+class Style:
     display_name: str
     module: Any
 
@@ -76,7 +79,9 @@ def get_color_schemes() -> dict[str, dict[str, str]]:
 
 color_schemes = get_color_schemes()
 color_scheme_names: dict[str, str] = [
-    (color_schemes[color_scheme]['name'], color_scheme) for color_scheme in color_schemes]
+    (color_schemes[color_scheme]["name"], color_scheme)
+    for color_scheme in color_schemes
+]
 
 
 def get_styles() -> dict[str, Style]:
