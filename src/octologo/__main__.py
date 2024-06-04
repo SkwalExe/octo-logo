@@ -3,7 +3,7 @@ from collections.abc import Generator
 from time import time
 
 from click_extra import ExtraContext, Parameter, extra_command, option
-from PIL import Image
+from PIL.Image import Image
 from textual.app import App
 from textual.events import Key
 from textual.validation import Length
@@ -41,7 +41,7 @@ class OctoLogoApp(App):
     TITLE = "Octo Logo Wizard"
     finished: bool = False
     save_to: str | None = None
-    result: Image.Image | None = None
+    result: Image | None = None
     loading_wid: LoadingIndicator = LoadingIndicator(classes="hidden")
 
     async def on_key(self, event: Key) -> None:

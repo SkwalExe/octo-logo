@@ -99,7 +99,7 @@ class Wizard(Static):
         answers = dict
         wizard_id: str
 
-        def __init__(self, answers, wizard_id) -> None:
+        def __init__(self, answers: dict, wizard_id: str) -> None:
             self.answers = answers
             self.wizard_id = wizard_id
             super().__init__()

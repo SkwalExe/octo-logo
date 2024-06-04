@@ -12,6 +12,7 @@ from octologo.utils import (
 from octologo.wizard import SelectQuestion, TextQuestion
 from PIL import Image, ImageColor, ImageDraw, ImageFont
 from PIL.Image import Image as ImageClass
+from PIL.ImageFont import FreeTypeFont
 from textual.validation import Number
 
 sys.path.append("..")
@@ -40,10 +41,10 @@ questions = [
 active = False
 
 
-def get_image(answers) -> ImageClass:
+def get_image(answers: dict) -> ImageClass:
     # Load the selected font
     font_size = 500
-    font = ImageFont.truetype(os.path.join(FONTS_DIR, answers["font"]), font_size)
+    font: FreeTypeFont = ImageFont.truetype(os.path.join(FONTS_DIR, answers["font"]), font_size)
 
     # Set the colors
     background = ImageColor.getrgb(color_schemes[answers["color"]]["background"])

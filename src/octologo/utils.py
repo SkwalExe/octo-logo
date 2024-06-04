@@ -1,11 +1,12 @@
 import os
 from importlib import import_module
 from sys import stdout
-from typing import Any
+from types import ModuleType
 
 import toml
 from loguru import logger
 from PIL import Image, ImageDraw
+from PIL.ImageFont import FreeTypeFont
 
 logger.remove()
 logger.add(
@@ -16,7 +17,7 @@ logger.add(
 )
 
 
-def get_text_size(text, font) -> tuple[int, int]:
+def get_text_size(text: str, font: FreeTypeFont) -> tuple[int, int]:
     text_bbox = ImageDraw.Draw(Image.new("RGBA", (1, 1), (0, 0, 0, 0))).textbbox(
         (0, 0), text, font=font
     )
@@ -26,13 +27,13 @@ def get_text_size(text, font) -> tuple[int, int]:
     return text_width, text_height
 
 
-def get_font_height(font):
+def get_font_height(font: FreeTypeFont) -> int:
     return font.getbbox(
         "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789"
     )[3]
 
 
-def remove_ext(filename) -> str:
+def remove_ext(filename: str) -> str:
     """
     Remove the extension from a filename if there is one
     """
@@ -41,9 +42,9 @@ def remove_ext(filename) -> str:
 
 class Style:
     display_name: str
-    module: Any
+    module: ModuleType
 
-    def __init__(self, display_name: str, module: Any) -> None:
+    def __init__(self, display_name: str, module: ModuleType) -> None:
         self.display_name = display_name
         self.module = module
 
