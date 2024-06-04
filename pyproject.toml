@@ -30,3 +30,13 @@ octologo = "octologo.__main__:main"
 [tool.pdm]
 distribution = true
 
+[tool.pdm.dev-dependencies]
+dev = [
+    "ruff>=0.4.7",
+]
+
+[tool.pdm.scripts]
+format = "ruff format"
+format-check = "ruff format --check"
+lint = "ruff check --fix --show-fixes"
+lint-check = "ruff check"

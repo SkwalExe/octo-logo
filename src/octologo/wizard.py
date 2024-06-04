@@ -1,16 +1,19 @@
-from octologo.utils import logger
+from collections.abc import Generator
 from typing import Any
-from textual.validation import Validator
-from textual.widgets import Input, Select, Static, Button, Label
-from textual.validation import ValidationResult
-from textual.reactive import reactive
-from textual.message import Message
-from textual import on
+
 import inquirer as inq
+from textual import on
+from textual.message import Message
+from textual.reactive import reactive
+from textual.validation import ValidationResult, Validator
+from textual.widgets import Button, Input, Label, Select, Static
+
+from octologo.utils import logger
+
 # from textual import log
 
 
-class QuestionBase():
+class QuestionBase:
     name: str
     label: str
 
@@ -32,15 +35,20 @@ class TextQuestion(QuestionBase):
         label: str,
         validators: list[Validator] | None = None,
         placeholder: str = "",
-        default_value: str = ""
+        default_value: str = "",
     ) -> None:
         super().__init__(name, label)
         self.validators = validators
         self.placeholder = placeholder
         self.default_value = default_value
 
-    def as_widget(self):
-        _input = Input(classes="full-width", id=self.name, placeholder=self.placeholder, validators=self.validators)
+    def as_widget(self) -> Input:
+        _input = Input(
+            classes="full-width",
+            id=self.name,
+            placeholder=self.placeholder,
+            validators=self.validators,
+        )
         _input.border_title = self.label
         _input.value = self.default_value
         return _input
@@ -52,23 +60,20 @@ class SelectQuestion(QuestionBase):
     default_value: Any | None = None
 
     def __init__(
-        self,
-        name: str,
-        label: str,
-        options: list,
-        default_value: str | None = None
+        self, name: str, label: str, options: list, default_value: str | None = None
     ) -> None:
         super().__init__(name, label)
         self.options = options
         self.default_value = default_value
 
-    def as_widget(self):
+    def as_widget(self) -> Select:
         _select = Select(
             classes="full-width",
             id=self.name,
             options=self.options,
             allow_blank=False,
-            value=self.default_value)
+            value=self.default_value,
+        )
 
         _select.border_title = self.label
 
@@ -76,7 +81,7 @@ class SelectQuestion(QuestionBase):
 
 
 class BackNextButtons(Static):
-    def compose(self):
+    def compose(self) -> Generator:
         yield Button("Back", variant="warning", id="back")
         yield Button("Next", variant="success", id="next")
 
@@ -94,19 +99,19 @@ class Wizard(Static):
         answers = dict
         wizard_id: str
 
-        def __init__(self, answers, wizard_id):
+        def __init__(self, answers: dict, wizard_id: str) -> None:
             self.answers = answers
             self.wizard_id = wizard_id
             super().__init__()
 
     @on(Button.Pressed, "#back")
-    def on_back(self):
+    def on_back(self) -> None:
         # When the back button is pressed, just go to the previous question
         # It cannot be pressed if there arent any questions before
         self.question_index -= 1
 
     @on(Button.Pressed, "#next")
-    async def on_next(self):
+    async def on_next(self) -> None:
         # If the selected question is an input then fire the submit event so that
         # validation is made and the next question is shown.
         # Else, just go to the next question since a select cannot be invalid
@@ -115,7 +120,7 @@ class Wizard(Static):
         else:
             self.question_index += 1
 
-    def handle_validation_result(self, validation_result: ValidationResult):
+    def handle_validation_result(self, validation_result: ValidationResult) -> None:
         if validation_result is None or validation_result.is_valid:
             # If the validation is OK then hide the error message and set the input color back to normal
             # Also, reenable the next button
@@ -131,27 +136,27 @@ class Wizard(Static):
             self.input_message.renderable = validation_result.failure_descriptions[0]
             self.selected_question.add_class("invalid")
 
-    def on_input_changed(self, message: Input.Changed):
+    def on_input_changed(self, message: Input.Changed) -> None:
         # When an input is changed, save its new value into the self.answers dict
         self.answers[message.input.id] = message.value
 
         # Show error messages if any
         self.handle_validation_result(message.validation_result)
 
-    def on_input_submitted(self, message: Input.Submitted):
+    def on_input_submitted(self, message: Input.Submitted) -> None:
         # Handle the validation result to show
         # a message if there are any errors
         self.handle_validation_result(message.validation_result)
 
         # When the input is submitted, if it is valid then go to the next question
-        if (message.validation_result.is_valid):
+        if message.validation_result.is_valid:
             self.question_index += 1
 
-    def on_select_changed(self, message: Select.Changed):
+    def on_select_changed(self, message: Select.Changed) -> None:
         # When a select is changed update the value in the self.answers dict
         self.answers[message.select.id] = message.value
 
-    def compose(self):
+    def compose(self) -> Generator:
         # Render directly every input
         # They are all hidden by default
         for i, question in enumerate(self.questions):
@@ -173,7 +178,9 @@ class Wizard(Static):
             yield wid
 
         # The error message below inputs if there are any errors
-        self.input_message = Label("This is the input error message", id="input_message", classes="hidden")
+        self.input_message = Label(
+            "This is the input error message", id="input_message", classes="hidden"
+        )
         self.input_message.styles.color = "tomato"
         self.input_message.styles.max_width = "100%"
         yield self.input_message
@@ -181,12 +188,11 @@ class Wizard(Static):
         # ----------------------------
         yield BackNextButtons()
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         # Trigger the watch_question_index function to make the first input appear
         self.question_index = 0
 
-    def watch_question_index(self):
-
+    def watch_question_index(self) -> None:
         # Remove the selected class from the previous shown input if any
         if self.selected_question is not None:
             self.selected_question.add_class("hidden")
@@ -198,10 +204,14 @@ class Wizard(Static):
             return
 
         # Put the question index in the border title
-        self.border_title = f"{self.title} [{self.question_index + 1}/{len(self.questions)}]"
+        self.border_title = (
+            f"{self.title} [{self.question_index + 1}/{len(self.questions)}]"
+        )
 
         # Show the input corresponding to the new value of self.question_index
-        self.selected_question = self.query_one(f"#{self.questions[self.question_index].name}")
+        self.selected_question = self.query_one(
+            f"#{self.questions[self.question_index].name}"
+        )
         self.selected_question.remove_class("hidden")
         self.selected_question.focus()
 
@@ -226,9 +236,8 @@ def inq_ask(questions: list[SelectQuestion | TextQuestion]) -> dict[str, Any]:
     for question in questions:
         if isinstance(question, SelectQuestion):
             answers[question.name] = inq.list_input(
-                question.label,
-                choices=question.options,
-                default=question.default_value)
+                question.label, choices=question.options, default=question.default_value
+            )
 
         elif isinstance(question, TextQuestion):
             while True:
