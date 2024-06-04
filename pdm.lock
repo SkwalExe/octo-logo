@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:d0f3eaebd8638972acd6757d5c3ae2dd504997f53b9793633de23a94ee4d9619"
+content_hash = "sha256:b0ad4172b743de8290f0399d5ff2bbf91e47a669f90f1e195b80aa856995962d"
 
 [[package]]
 name = "alabaster"
@@ -496,6 +496,17 @@ files = [
 ]
 
 [[package]]
+name = "nodeenv"
+version = "1.9.0"
+requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+summary = "Node.js virtual environment builder"
+groups = ["default"]
+files = [
+    {file = "nodeenv-1.9.0-py2.py3-none-any.whl", hash = "sha256:508ecec98f9f3330b636d4448c0f1a56fc68017c68f1e7857ebc52acf0eb879a"},
+    {file = "nodeenv-1.9.0.tar.gz", hash = "sha256:07f144e90dae547bf0d4ee8da0ee42664a42a04e02ed68e06324348dafe4bdb1"},
+]
+
+[[package]]
 name = "packaging"
 version = "24.0"
 requires_python = ">=3.7"
@@ -611,6 +622,20 @@ dependencies = [
 files = [
     {file = "pygments-ansi-color-0.3.0.tar.gz", hash = "sha256:7018954cf5b11d1e734383a1bafab5af613213f246109417fee3f76da26d5431"},
     {file = "pygments_ansi_color-0.3.0-py3-none-any.whl", hash = "sha256:7eb063feaecadad9d4d1fd3474cbfeadf3486b64f760a8f2a00fc25392180aba"},
+]
+
+[[package]]
+name = "pyright"
+version = "1.1.365"
+requires_python = ">=3.7"
+summary = "Command line wrapper for pyright"
+groups = ["default"]
+dependencies = [
+    "nodeenv>=1.6.0",
+]
+files = [
+    {file = "pyright-1.1.365-py3-none-any.whl", hash = "sha256:194d767a039f9034376b7ec8423841880ac6efdd061f3e283b4ad9fcd484a659"},
+    {file = "pyright-1.1.365.tar.gz", hash = "sha256:d7e69000939aed4bf823707086c30c84c005bdd39fac2dfb370f0e5be16c2ef2"},
 ]
 
 [[package]]

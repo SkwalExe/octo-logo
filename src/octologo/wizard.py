@@ -19,7 +19,6 @@ class QuestionBase:
 
     def __init__(self, name: str, label: str) -> None:
         self.name = name
-        self.type = type
         self.label = label
 
 
@@ -27,7 +26,6 @@ class TextQuestion(QuestionBase):
     validators: list[Validator] | None
     placeholder: str
     default_value: str
-    type: str = "text"
 
     def __init__(
         self,
@@ -43,6 +41,7 @@ class TextQuestion(QuestionBase):
         self.default_value = default_value
 
     def as_widget(self) -> Input:
+        """Returns a Textual input widget with the correcponding information"""
         _input = Input(
             classes="full-width",
             id=self.name,
@@ -55,13 +54,10 @@ class TextQuestion(QuestionBase):
 
 
 class SelectQuestion(QuestionBase):
-    options: list
-    type: str = "select"
+    options: list[tuple[str, Any]]
     default_value: Any | None = None
 
-    def __init__(
-        self, name: str, label: str, options: list, default_value: str | None = None
-    ) -> None:
+    def __init__(self, name: str, label: str, options: list[tuple[str, Any]], default_value: str | None = None) -> None:
         super().__init__(name, label)
         self.options = options
         self.default_value = default_value
@@ -89,17 +85,17 @@ class BackNextButtons(Static):
 class Wizard(Static):
     question_index = reactive(-1)
     answers: dict = dict()
-    selected_question = None
+    selected_question: None | Select | Input = None
     questions: list[SelectQuestion | TextQuestion]
     input_message: Label
     title: str = "Wizard"
 
     # The message sent when the "next" button is clicked while on the last question
     class Finished(Message):
-        answers = dict
-        wizard_id: str
+        answers: dict
+        wizard_id: str | None
 
-        def __init__(self, answers: dict, wizard_id: str) -> None:
+        def __init__(self, answers: dict, wizard_id: str | None) -> None:
             self.answers = answers
             self.wizard_id = wizard_id
             super().__init__()
@@ -120,7 +116,10 @@ class Wizard(Static):
         else:
             self.question_index += 1
 
-    def handle_validation_result(self, validation_result: ValidationResult) -> None:
+    def handle_validation_result(self, validation_result: ValidationResult | None) -> None:
+        if self.selected_question is None:
+            raise Exception("selected_question should not be None")
+
         if validation_result is None or validation_result.is_valid:
             # If the validation is OK then hide the error message and set the input color back to normal
             # Also, reenable the next button
@@ -149,7 +148,7 @@ class Wizard(Static):
         self.handle_validation_result(message.validation_result)
 
         # When the input is submitted, if it is valid then go to the next question
-        if message.validation_result.is_valid:
+        if message.validation_result is None or message.validation_result.is_valid:
             self.question_index += 1
 
     def on_select_changed(self, message: Select.Changed) -> None:
@@ -178,9 +177,7 @@ class Wizard(Static):
             yield wid
 
         # The error message below inputs if there are any errors
-        self.input_message = Label(
-            "This is the input error message", id="input_message", classes="hidden"
-        )
+        self.input_message = Label("This is the input error message", id="input_message", classes="hidden")
         self.input_message.styles.color = "tomato"
         self.input_message.styles.max_width = "100%"
         yield self.input_message
@@ -193,25 +190,26 @@ class Wizard(Static):
         self.question_index = 0
 
     def watch_question_index(self) -> None:
-        # Remove the selected class from the previous shown input if any
+        """Called when the question index changes"""
+
+        # Add 'hidden' class to the previous shown input if any
         if self.selected_question is not None:
             self.selected_question.add_class("hidden")
 
         # If the question index has been incremented but it is now out of bound then
         # the user clicked next on the last question
-        if self.question_index == len(self.questions):
+        if self.question_index >= len(self.questions):
             self.post_message(self.Finished(self.answers, self.id))
             return
 
         # Put the question index in the border title
-        self.border_title = (
-            f"{self.title} [{self.question_index + 1}/{len(self.questions)}]"
-        )
+        self.border_title = f"{self.title} [{self.question_index + 1}/{len(self.questions)}]"
 
         # Show the input corresponding to the new value of self.question_index
-        self.selected_question = self.query_one(
-            f"#{self.questions[self.question_index].name}"
-        )
+        element = self.query_one(f"#{self.questions[self.question_index].name}")
+        if not isinstance(element, (Input, Select)):
+            raise Exception("Wanted Input or Select but got something else")
+        self.selected_question = element
         self.selected_question.remove_class("hidden")
         self.selected_question.focus()
 
@@ -220,7 +218,10 @@ class Wizard(Static):
         self.query_one("#back").disabled = self.question_index == 0
 
 
-def validate_text_question(question: SelectQuestion | TextQuestion, value: str) -> bool:
+def validate_text_question(question: TextQuestion, value: str) -> bool:
+    if question.validators is None:
+        return True
+
     for validator in question.validators:
         validation = validator.validate(value)
         if not validation.is_valid:

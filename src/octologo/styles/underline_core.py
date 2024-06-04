@@ -1,5 +1,3 @@
-import sys
-
 from octologo.utils import (
     FONTS_DIR,
     color_scheme_names,
@@ -14,9 +12,6 @@ from PIL import Image, ImageColor, ImageDraw, ImageFont
 from PIL.Image import Image as ImageClass
 from PIL.ImageFont import FreeTypeFont
 from textual.validation import Number
-
-sys.path.append("..")
-
 
 questions = [
     SelectQuestion(
@@ -52,7 +47,7 @@ def get_image(answers: dict) -> ImageClass:
     accent = ImageColor.getrgb(color_schemes[answers["color"]]["accent"])
 
     # Get the width and height of the texts
-    text_width, text_height = get_text_size(answers["name"], font)
+    text_width = get_text_size(answers["name"], font)[0]
     font_height = get_font_height(font)
 
     # Get the correct image width and height
@@ -93,7 +88,7 @@ def get_image(answers: dict) -> ImageClass:
         underline_start = (underline_start_x, underline_start_y)
         underline_end = (underline_end_x, underline_end_y)
 
-        underline_pos = [underline_start, underline_end]
+        underline_pos = (underline_start, underline_end)
 
         # Underline the first letter
         draw.rectangle(underline_pos, fill=accent, width=answers["bar_size"])
