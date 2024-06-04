@@ -1,7 +1,9 @@
 import os
 from importlib import import_module
 from sys import stdout
+from time import time
 from types import ModuleType
+from typing import Any
 
 import toml
 from loguru import logger
@@ -11,16 +13,12 @@ from PIL.ImageFont import FreeTypeFont
 logger.remove()
 logger.add(
     stdout,
-    format="[ <green>{time:HH:mm:ss}</green> ]"
-    " - <level>{level}</level> -> "
-    "<level>{message}</level>",
+    format="[ <green>{time:HH:mm:ss}</green> ]" " - <level>{level}</level> -> " "<level>{message}</level>",
 )
 
 
 def get_text_size(text: str, font: FreeTypeFont) -> tuple[int, int]:
-    text_bbox = ImageDraw.Draw(Image.new("RGBA", (1, 1), (0, 0, 0, 0))).textbbox(
-        (0, 0), text, font=font
-    )
+    text_bbox = ImageDraw.Draw(Image.new("RGBA", (1, 1), (0, 0, 0, 0))).textbbox((0, 0), text, font=font)
     text_width = text_bbox[2] - text_bbox[0]
     text_height = text_bbox[3] - text_bbox[1]
 
@@ -28,9 +26,7 @@ def get_text_size(text: str, font: FreeTypeFont) -> tuple[int, int]:
 
 
 def get_font_height(font: FreeTypeFont) -> int:
-    return font.getbbox(
-        "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789"
-    )[3]
+    return font.getbbox("azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789")[3]
 
 
 def remove_ext(filename: str) -> str:
@@ -80,9 +76,8 @@ def get_color_schemes() -> dict[str, dict[str, str]]:
 
 
 color_schemes = get_color_schemes()
-color_scheme_names: dict[str, str] = [
-    (color_schemes[color_scheme]["name"], color_scheme)
-    for color_scheme in color_schemes
+color_scheme_names: list[tuple[str, Any]] = [
+    (color_schemes[color_scheme]["name"], color_scheme) for color_scheme in color_schemes
 ]
 
 
@@ -109,6 +104,10 @@ def get_styles() -> dict[str, Style]:
     return styles
 
 
+def get_output_filename(project_name: str) -> str:
+    return f"octologo_{project_name}_{int(time())}.png"
+
+
 styles = get_styles()
 
-style_names: dict[str, str] = [(styles[style].display_name, style) for style in styles]
+style_names: list[tuple[str, Any]] = [(styles[style].display_name, style) for style in styles]

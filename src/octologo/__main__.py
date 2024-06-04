@@ -1,7 +1,8 @@
+# ---------------------------------------- Standard Imports
 import os
 from collections.abc import Generator
-from time import time
 
+# ---------------------------------------- External Imports
 from click_extra import ExtraContext, Parameter, extra_command, option
 from PIL.Image import Image
 from textual.app import App
@@ -9,11 +10,10 @@ from textual.events import Key
 from textual.validation import Length
 from textual.widgets import Footer, Header, Label, LoadingIndicator
 
+# ---------------------------------------- Local Imports
 from octologo import __version__
-from octologo.utils import BASE_DIR, logger, style_names, styles
+from octologo.utils import BASE_DIR, get_output_filename, logger, style_names, styles
 from octologo.wizard import SelectQuestion, TextQuestion, Wizard, inq_ask
-
-# from textual import log
 
 BASIC_INFO_QUESTIONS = [
     TextQuestion(
@@ -26,10 +26,6 @@ BASIC_INFO_QUESTIONS = [
 ]
 
 
-def get_output_filaname(project_name: str) -> str:
-    return f"octologo_{project_name}_{int(time())}.png"
-
-
 class OctoLogoApp(App):
     BINDINGS = [
         ("ctrl+q", "quit", "Quit"),
@@ -40,7 +36,6 @@ class OctoLogoApp(App):
     CSS_PATH = os.path.join(BASE_DIR, "app.tcss")
     TITLE = "Octo Logo Wizard"
     finished: bool = False
-    save_to: str | None = None
     result: Image | None = None
     loading_wid: LoadingIndicator = LoadingIndicator(classes="hidden")
 
@@ -48,6 +43,8 @@ class OctoLogoApp(App):
         if event.key == "enter" and self.finished:
             await self.action_quit()
         elif event.key == "v" and self.finished:
+            if self.result is None:
+                raise Exception("self.result should not be null")
             self.result.show()
 
     def on_wizard_finished(self, message: Wizard.Finished) -> None:
@@ -68,21 +65,25 @@ class OctoLogoApp(App):
         elif finished_wizard_id == "style_wizard":
             style = styles[self.answers["style"]].module
             self.result = style.get_image(self.answers)
-            self.save_to = get_output_filaname(self.answers["name"])
             self.loading_wid.remove_class("hidden")
             self.set_timer(2, self.final_message)
 
     # Final message
     def final_message(self) -> None:
+        if self.result is None:
+            raise Exception("self.result should not be none in OctoLogoApp.final_message")
+
+        save_to = get_output_filename(self.answers["name"])
+
         self.loading_wid.add_class("hidden")
         self.mount(
             Label(
-                f"Logo saved to [bold]{self.save_to}[/bold].\n"
+                f"Logo saved to [bold]{save_to}[/bold].\n"
                 f"[blue blink]-> Press v to view the result[/blue blink]\n"
                 f"[red]Press enter to quit[/red]"
             )
         )
-        self.result.save(self.save_to)
+        self.result.save(save_to)
         self.finished = True
 
     def compose(self) -> Generator:
@@ -98,7 +99,7 @@ class OctoLogoApp(App):
         yield self.loading_wid
 
 
-def disable_ansi(ctx: ExtraContext, param: Parameter, val: bool) -> bool:
+def disable_ansi(ctx: ExtraContext, _: Parameter, val: bool) -> bool:
     ctx.color = not val
 
     # We must return the value for the main function no_ansi parameter not to be None
@@ -106,18 +107,9 @@ def disable_ansi(ctx: ExtraContext, param: Parameter, val: bool) -> bool:
 
 
 @extra_command(params=[])
-@option(
-    "-t", "--no-tui", is_flag=True, help="Dont use the Textual Terminal User Interface"
-)
+@option("-t", "--no-tui", is_flag=True, help="Dont use the Textual Terminal User Interface")
 def main(no_tui: bool) -> None:
-    use_tui = not no_tui
-
-    if use_tui:
-        # If the tui is enabled, run the textual app
-        app = OctoLogoApp()
-        app.run()
-        quit(0)
-    else:
+    if no_tui:
         # If the tui is disabled, do everything without textual
         answers = dict()
 
@@ -126,11 +118,12 @@ def main(no_tui: bool) -> None:
 
         style = styles[answers["style"]].module
         result = style.get_image(answers)
-        save_to = get_output_filaname(answers["name"])
 
+        save_to = get_output_filename(answers["name"])
         result.save(save_to)
         logger.success(f"Image saved to : {save_to}")
-
-
-if __name__ == "__main__":
-    main()
+    else:
+        # If the tui is enabled, run the textual app
+        app = OctoLogoApp()
+        app.run()
+        quit(0)
