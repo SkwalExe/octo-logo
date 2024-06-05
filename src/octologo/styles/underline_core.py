@@ -21,16 +21,12 @@ questions = [
         "Iosevka-Nerd-Font-Complete.ttf",
     ),
     SelectQuestion("color", "Select a color scheme", color_scheme_names, "adi1090x"),
-    TextQuestion(
-        "underline_count", "Lettrs to undrline", [Number(minimum=0)], "1", "1"
-    ),
+    TextQuestion("underline_count", "Lettrs to undrline", [Number(minimum=0)], "1", "1"),
     TextQuestion("padding_x", "Padding x (px)", [Number()], "200", "200"),
     TextQuestion("padding_y", "Padding y (px)", [Number()], "20", "20"),
     TextQuestion("gap", "Gap between text and bar (px)", [Number()], "20", "20"),
     TextQuestion("bar_size", "Bar weight (px)", [Number()], "20", "20"),
-    TextQuestion(
-        "additionnal_bar_width", "Additionnal bar width (px)", [Number()], "20", "20"
-    ),
+    TextQuestion("additionnal_bar_width", "Additionnal bar width (px)", [Number()], "20", "20"),
 ]
 
 active = False
@@ -76,9 +72,7 @@ def get_image(answers: dict) -> ImageClass:
         )
 
         # Get the underline position
-        underline_start_x = first_letters_bbox[0] - int(
-            answers["additionnal_bar_width"]
-        )
+        underline_start_x = first_letters_bbox[0] - int(answers["additionnal_bar_width"])
         underline_start_y = first_letters_bbox[3] + int(answers["gap"])
 
         underline_end_x = int(answers["additionnal_bar_width"]) + first_letters_bbox[2]
