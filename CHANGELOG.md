@@ -1,3 +1,12 @@
+# v3.0.1 - 2024-06-05
+
+### Fixed
+- A lot of possible type errors
+
+### Added
+- Automated formatting/linting/typing checks
+- Automated publishing to PyPI
+
 # v3.0.0 - 2024-05-28
 
 ### Changed

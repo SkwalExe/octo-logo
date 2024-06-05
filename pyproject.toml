@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "octologo"
-version = "3.0.0"
+version = "3.0.1"
 description = "Simple program that generates a logo for your open source projects."
 authors = [{name = "Leopold Koprivnik", email = "skwal@etik.com"}]
 readme = "README.md"
