@@ -81,6 +81,94 @@ echo 'export PATH=$PATH:~/.local/bin' >> ~/.zshrc
   <img src="https://raw.githubusercontent.com/SkwalExe/octo-logo/main/assets/color3.png">
 </p>
 
-# Development
+# Contributing 🤝
 
-Please, open an issue if you have any suggestion or if you found a bug. I will try to fix it as soon as possible. If you want to contribute, open an empty pull request and explain what you want to do, wait for me to approve it and then you can start working on it.
+Please, open an issue if you have any suggestion or if you found a bug. I will try to fix it as soon as possible.
+
+## General Info About the Project 📖
+
+This is a terminal application that allows developers to generate logos for their projects. It uses the following technologies for the development process and for the build pipeline:
+
+- [PDM](https://pdm-project.org/en/latest/) for development scripts and managing (dev)dependencies.
+- [Ruff](https://docs.astral.sh/ruff/) for linting and formatting
+- [Pyright](https://microsoft.github.io/pyright/#/) for type checking
+
+You can install PDM with the following command:
+
+```bash
+curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+```
+
+## Setting up the development environment 🖥️
+
+- [Fork this repository to your own GitHub account.](https://github.com/SkwalExe/octo-logo/fork)
+
+- Clone your fork locally.
+
+```bash
+git clone https://github.com/YOUR_USERNAME/octo-logo
+cd ./octo-logo
+```
+
+- Install dependencies
+
+```bash
+pdm install
+```
+
+## Files and directories 📂
+
+__Configuration Files:__ ⚙
+
+- `ruff.toml`: Ruff configuration file (for linting and formatting)
+- `pyproject.toml`: Python module configuration
+
+__Source:__ 🔢
+- `src/octologo/colors/`: Contains color schemes (.toml files).
+- `src/octologo/fonts/`: Contains font files that can be used in the app.
+- `src/octologo/styles/`: Contains available logo styles.
+- `src/octologo/__main__.py`: Application entry point.
+
+__Other:__ 📄
+
+- `assets/`: Assets for the GitHub repo only.
+
+## Creating a pull request 👍
+
+If you'd like to contribute, please open an empty pull request and provide an explanation of your proposed changes. Once I approve it, you can begin your work. It's always disheartening to reject a pull request after someone has invested a lot of time and effort into it. 😿
+
+- Create a branch for your contribution
+
+```bash
+git checkout -b my-new-feature
+```
+
+- When you finished your changes, you must check your code's formatting and linting and fix all the errors.
+
+```bash
+pdm run format # Check for formatting errors (most errors should be automatically fixed)
+pdm run lint # Check for linting errors
+pdm run check-types # Check for type errors
+```
+
+- After that, add your changes to `CHANGELOG.md` and update the README if needed.
+
+- Do not increment the module version yourself, the maintainer will do it.
+
+- Then, you can commit your work and push to your fork.
+
+```bash
+git add --all 
+git commit -m "Added a new feature"
+git push -u origin my-new-feature
+```
+
+- Finally, you can create your pull request from your fork repo's github page.
+
+## PDM scripts
+
+- `format`: Checks for formatting errors and fixes them if possible.
+- `format-check`: Checks for formatting errors and exists with error code if any is found.
+- `lint`: Checks for linting errors and fixes them if possible.
+- `lint-check`: Check for linting errors and exits with error code if any is found.
+- `check-types`: Check for type errors with Pyright.
