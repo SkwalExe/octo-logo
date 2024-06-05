@@ -1,3 +1,3 @@
 """Simple program that generates a logo for your open source projects"""
 
-__version__ = "3.0.0-dev"
+__version__ = "3.0.1"
