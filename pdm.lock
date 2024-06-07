@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:41b3ff49f92781f95a1f9c84b7f4d7c8eddff12565c3ba27e17cd709a8ff122c"
+content_hash = "sha256:42b1bcffffcada806672a77d5177acfe8ef01481063096a7d434573dad14b79f"
 
 [[package]]
 name = "alabaster"
@@ -252,6 +252,21 @@ files = [
 ]
 
 [[package]]
+name = "editor"
+version = "1.6.6"
+requires_python = ">=3.8"
+summary = "🖋 Open the default text editor 🖋"
+groups = ["default"]
+dependencies = [
+    "runs",
+    "xmod",
+]
+files = [
+    {file = "editor-1.6.6-py3-none-any.whl", hash = "sha256:e818e6913f26c2a81eadef503a2741d7cca7f235d20e217274a009ecd5a74abf"},
+    {file = "editor-1.6.6.tar.gz", hash = "sha256:bb6989e872638cd119db9a4fce284cd8e13c553886a1c044c6b8d8a160c871f8"},
+]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.2.1"
 requires_python = ">=3.7"
@@ -321,18 +336,18 @@ files = [
 
 [[package]]
 name = "inquirer"
-version = "3.1.3"
-requires_python = ">=3.8"
+version = "3.2.4"
+requires_python = ">=3.8.1"
 summary = "Collection of common interactive command line user interfaces, based on Inquirer.js"
 groups = ["default"]
 dependencies = [
     "blessed>=1.19.0",
-    "python-editor>=1.0.4",
+    "editor>=1.6.0",
     "readchar>=3.0.6",
 ]
 files = [
-    {file = "inquirer-3.1.3-py3-none-any.whl", hash = "sha256:a7441fd74d06fcac4385218a1f5e8703f7a113f7944e01af47b8c58e84f95ce5"},
-    {file = "inquirer-3.1.3.tar.gz", hash = "sha256:aac309406f5b49d4b8ab7c6872117f43bf082a552dc256aa16bc95e16bb58bec"},
+    {file = "inquirer-3.2.4-py3-none-any.whl", hash = "sha256:273a4e4a4345ac1afdb17408d40fc8dccf3485db68203357919468561035a763"},
+    {file = "inquirer-3.2.4.tar.gz", hash = "sha256:33b09efc1b742b9d687b540296a8b6a3f773399673321fcc2ab0eb4c109bf9b5"},
 ]
 
 [[package]]
@@ -706,16 +721,6 @@ files = [
 ]
 
 [[package]]
-name = "python-editor"
-version = "1.0.4"
-summary = "Programmatically open an editor, capture the result."
-groups = ["default"]
-files = [
-    {file = "python-editor-1.0.4.tar.gz", hash = "sha256:51fda6bcc5ddbbb7063b2af7509e43bd84bfc32a4ff71349ec7847713882327b"},
-    {file = "python_editor-1.0.4-py3-none-any.whl", hash = "sha256:1bf6e860a8ad52a14c3ee1252d5dc25b2030618ed80c022598f00176adc8367d"},
-]
-
-[[package]]
 name = "pyyaml"
 version = "6.0.1"
 requires_python = ">=3.6"
@@ -895,6 +900,20 @@ files = [
     {file = "ruff-0.4.8-py3-none-win_amd64.whl", hash = "sha256:e14a3a095d07560a9d6769a72f781d73259655919d9b396c650fc98a8157555d"},
     {file = "ruff-0.4.8-py3-none-win_arm64.whl", hash = "sha256:14019a06dbe29b608f6b7cbcec300e3170a8d86efaddb7b23405cb7f7dcaf780"},
     {file = "ruff-0.4.8.tar.gz", hash = "sha256:16d717b1d57b2e2fd68bd0bf80fb43931b79d05a7131aa477d66fc40fbd86268"},
+]
+
+[[package]]
+name = "runs"
+version = "1.2.2"
+requires_python = ">=3.8"
+summary = "🏃 Run a block of text as a subprocess 🏃"
+groups = ["default"]
+dependencies = [
+    "xmod",
+]
+files = [
+    {file = "runs-1.2.2-py3-none-any.whl", hash = "sha256:0980dcbc25aba1505f307ac4f0e9e92cbd0be2a15a1e983ee86c24c87b839dfd"},
+    {file = "runs-1.2.2.tar.gz", hash = "sha256:9dc1815e2895cfb3a48317b173b9f1eac9ba5549b36a847b5cc60c3bf82ecef1"},
 ]
 
 [[package]]
@@ -1291,6 +1310,17 @@ groups = ["default"]
 files = [
     {file = "xmltodict-0.13.0-py2.py3-none-any.whl", hash = "sha256:aa89e8fd76320154a40d19a0df04a4695fb9dc5ba977cbb68ab3e4eb225e7852"},
     {file = "xmltodict-0.13.0.tar.gz", hash = "sha256:341595a488e3e01a85a9d8911d8912fd922ede5fecc4dce437eb4b6c8d037e56"},
+]
+
+[[package]]
+name = "xmod"
+version = "1.8.1"
+requires_python = ">=3.8"
+summary = "🌱 Turn any object into a module 🌱"
+groups = ["default"]
+files = [
+    {file = "xmod-1.8.1-py3-none-any.whl", hash = "sha256:a24e9458a4853489042522bdca9e50ee2eac5ab75c809a91150a8a7f40670d48"},
+    {file = "xmod-1.8.1.tar.gz", hash = "sha256:38c76486b9d672c546d57d8035df0beb7f4a9b088bc3fb2de5431ae821444377"},
 ]
 
 [[package]]
