@@ -19,7 +19,6 @@ dependencies = [
     "textual==0.38.1",
     "click-extra==4.7.2",
     "loguru==0.7.2",
-    "pyright>=1.1.365",
 ]
 
 [project.urls]
@@ -34,6 +33,9 @@ distribution = true
 [tool.pdm.dev-dependencies]
 dev = [
     "ruff>=0.4.7",
+    "pytest>=8.2.2",
+    "pytest-asyncio>=0.23.7",
+    "pyright>=1.1.365",
 ]
 
 [tool.pdm.scripts]
@@ -42,3 +44,4 @@ format-check = "ruff format --check"
 lint = "ruff check --fix --show-fixes"
 lint-check = "ruff check"
 check-types = "pyright"
+tests = "pytest"

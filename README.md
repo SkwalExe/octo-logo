@@ -92,6 +92,7 @@ This is a terminal application that allows developers to generate logos for thei
 - [PDM](https://pdm-project.org/en/latest/) for development scripts and managing (dev)dependencies.
 - [Ruff](https://docs.astral.sh/ruff/) for linting and formatting
 - [Pyright](https://microsoft.github.io/pyright/#/) for type checking
+- [Pytest](https://docs.pytest.org/) for unit tests
 
 You can install PDM with the following command:
 
@@ -116,6 +117,19 @@ cd ./octo-logo
 pdm install
 ```
 
+- You must configure your IDE to use the project's venv or your extensions will fail to resolve the dependencies.
+
+- If you use a command line editor (like vim), you can activate the venv in your shell session then start vim.
+
+> [!CAUTION] 
+> This command must be run everytime you open a new shell session.
+
+```bash
+# Activating the project's venv (linux)
+eval $(pdm venv activate)
+vim
+```
+
 ## Files and directories 📂
 
 __Configuration Files:__ ⚙
@@ -132,6 +146,7 @@ __Source:__ 🔢
 __Other:__ 📄
 
 - `assets/`: Assets for the GitHub repo only.
+- `tests/`: Unit test files (pytest).
 
 ## Creating a pull request 👍
 
@@ -149,6 +164,12 @@ git checkout -b my-new-feature
 pdm run format # Check for formatting errors (most errors should be automatically fixed)
 pdm run lint # Check for linting errors
 pdm run check-types # Check for type errors
+```
+
+- You also have to run tests to check if your changes didn't break anything
+
+```bash
+pdm run tests
 ```
 
 - After that, add your changes to `CHANGELOG.md` and update the README if needed.
@@ -172,3 +193,4 @@ git push -u origin my-new-feature
 - `lint`: Checks for linting errors and fixes them if possible.
 - `lint-check`: Check for linting errors and exits with error code if any is found.
 - `check-types`: Check for type errors with Pyright.
+- `tests`: Run all unit tests.
