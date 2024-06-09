@@ -42,6 +42,7 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: docs/package.json
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
