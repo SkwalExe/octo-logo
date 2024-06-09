@@ -33,8 +33,6 @@ jobs:
         with:
           fetch-depth: 0 # Not needed if lastUpdated is not enabled
       - uses: pnpm/action-setup@v3 # Uncomment this if you're using pnpm
-        with:
-          run_install: false
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
