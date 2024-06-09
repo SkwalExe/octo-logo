@@ -19,6 +19,10 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+defaults:
+      run:
+        working-directory: docs/
+
 jobs:
   # Build job
   build:
@@ -38,10 +42,8 @@ jobs:
         uses: actions/configure-pages@v4
       - name: Install dependencies
         run: pnpm install
-        working-directory: ./docs
       - name: Build with VitePress
         run: pnpm run build
-        working-directory: ./docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
