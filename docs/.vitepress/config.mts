@@ -12,6 +12,7 @@ export default defineConfig({
             { text: "Home", link: "/" },
             { text: "Getting Started", link: "/getting-started" },
         ],
+        outline: 'deep',
         search: {
             provider: "local",
         },
@@ -20,10 +21,10 @@ export default defineConfig({
         },
         sidebar: [
             {
-                text: "Examples",
+                text: "Introduction",
                 items: [
-                    { text: "Markdown Examples", link: "/markdown-examples" },
-                    { text: "Runtime API Examples", link: "/api-examples" },
+                    { text: "📥 Getting Started", link: "/getting-started" },
+                    { text: "🎨 Available Styles/Temes", link: "/available-styles" },
                 ],
             },
         ],
