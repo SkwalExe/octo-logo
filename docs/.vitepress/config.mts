@@ -13,6 +13,10 @@ export default defineConfig({
             { text: "Getting Started", link: "/getting-started" },
         ],
         outline: 'deep',
+        footer: {
+            message: 'Released under the GNU General Public License (GPLv3).',
+            copyright: 'Copyright © 2021-present Léopold Koprivnik'
+        },
         search: {
             provider: "local",
         },
