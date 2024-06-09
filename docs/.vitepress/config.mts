@@ -12,6 +12,7 @@ export default defineConfig({
             { text: "Home", link: "/" },
             { text: "Getting Started", link: "/getting-started" },
         ],
+        outline: 'deep',
         footer: {
             message: 'Released under the GNU General Public License (GPLv3).',
             copyright: 'Copyright © 2021-present Léopold Koprivnik'
@@ -24,10 +25,10 @@ export default defineConfig({
         },
         sidebar: [
             {
-                text: "Examples",
+                text: "Introduction",
                 items: [
-                    { text: "Markdown Examples", link: "/markdown-examples" },
-                    { text: "Runtime API Examples", link: "/api-examples" },
+                    { text: "📥 Getting Started", link: "/getting-started" },
+                    { text: "🎨 Available Styles/Temes", link: "/available-styles" },
                 ],
             },
         ],
