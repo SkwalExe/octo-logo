@@ -26,3 +26,10 @@ features:
     icon: 💻
 ---
 
+
+<style>
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #e75351 30%, #f5b5b4);
+}
+</style>
