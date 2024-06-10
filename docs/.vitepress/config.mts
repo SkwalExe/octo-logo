@@ -28,7 +28,14 @@ export default defineConfig({
                 text: "Introduction",
                 items: [
                     { text: "📥 Getting Started", link: "/getting-started" },
-                    { text: "🎨 Available Styles/Temes", link: "/available-styles" },
+                    { text: "🎨 Available Styles/Themes", link: "/available-styles/index.html" },
+                ],
+            },
+            {
+                text: "Contributing",
+                items: [
+                    { text: "🏗️ Understanding the Project", link: "/understanding-the-project" },
+                    { text: "🫂 Creating a Pull Request", link: "/pull-request" },
                 ],
             },
         ],
