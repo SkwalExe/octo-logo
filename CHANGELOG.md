@@ -1,3 +1,8 @@
+# v3.0.2 - 2024-06-14
+
+### Fixed
+- Depencency error fails installation process
+
 # v3.0.1 - 2024-06-05
 
 ### Fixed
