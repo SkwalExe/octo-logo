@@ -17,21 +17,15 @@ dependencies = [
     "textual>=0.38.1",
     "click-extra>=4.7.2",
     "loguru>=0.7.2",
+    "textual-wizard>=0.4.3",
 ]
 dynamic = ["version"]
 
+[tool.pdm]
+distribution = true
 [tool.pdm.version]
 source = "file"
 path = "src/octologo/__init__.py"
-
-[project.urls]
-Home = "https://github.com/SkwalExe/octo-logo"
-
-[project.scripts]
-octologo = "octologo.__main__:main"
-
-[tool.pdm]
-distribution = true
 
 [tool.pdm.dev-dependencies]
 dev = [
@@ -39,12 +33,22 @@ dev = [
     "pytest>=8.2.2",
     "pytest-asyncio>=0.23.7",
     "pyright>=1.1.365",
+    "textual-dev>=1.5.1",
 ]
 
 [tool.pdm.scripts]
 format = "ruff format"
+dev = "textual run --dev -c octologo"
 format-check = "ruff format --check"
 lint = "ruff check --fix --show-fixes"
 lint-check = "ruff check"
 check-types = "pyright"
 tests = "pytest"
+console = "textual console -x EVENT -x SYSTEM"
+
+[project.urls]
+Home = "https://github.com/SkwalExe/octo-logo"
+
+[project.scripts]
+octologo = "octologo.__main__:main"
+

@@ -7,26 +7,32 @@ from octologo.utils import (
     get_text_size,
     os,
 )
-from octologo.wizard import SelectQuestion, TextQuestion
 from PIL import Image, ImageColor, ImageDraw, ImageFont
 from PIL.Image import Image as ImageClass
 from PIL.ImageFont import FreeTypeFont
 from textual.validation import Number
+from textual_wizard.inputs import Select, Text
 
 questions = [
-    SelectQuestion(
+    Select(
         "font",
         "Select a font",
-        [(font, font) for font in font_list],
-        "Iosevka-Nerd-Font-Complete.ttf",
+        options=[(font, font) for font in font_list],
+        default_value="Iosevka-Nerd-Font-Complete.ttf",
     ),
-    SelectQuestion("color", "Select a color scheme", color_scheme_names, "adi1090x"),
-    TextQuestion("underline_count", "Lettrs to undrline", [Number(minimum=0)], "1", "1"),
-    TextQuestion("padding_x", "Padding x (px)", [Number()], "200", "200"),
-    TextQuestion("padding_y", "Padding y (px)", [Number()], "20", "20"),
-    TextQuestion("gap", "Gap between text and bar (px)", [Number()], "20", "20"),
-    TextQuestion("bar_size", "Bar weight (px)", [Number()], "20", "20"),
-    TextQuestion("additionnal_bar_width", "Additionnal bar width (px)", [Number()], "20", "20"),
+    Select("color", "Select a color scheme", options=color_scheme_names, default_value="adi1090x"),
+    Text("underline_count", "Lettrs to undrline", validators=[Number(minimum=0)], initial_value="1", placeholder="1"),
+    Text("padding_x", "Padding x (px)", validators=[Number()], initial_value="200", placeholder="200"),
+    Text("padding_y", "Padding y (px)", validators=[Number()], initial_value="20", placeholder="20"),
+    Text("gap", "Gap between text and bar (px)", validators=[Number()], initial_value="20", placeholder="20"),
+    Text("bar_size", "Bar weight (px)", validators=[Number()], initial_value="20", placeholder="20"),
+    Text(
+        "additionnal_bar_width",
+        "Additionnal bar width (px)",
+        validators=[Number()],
+        initial_value="20",
+        placeholder="20",
+    ),
 ]
 
 active = False
