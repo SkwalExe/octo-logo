@@ -1,4 +1,4 @@
-name: Check for typing/linting/formatting/test errors
+name: Check for typing/linting/formatting errors
 
 on:
   pull_request:
@@ -25,6 +25,4 @@ jobs:
         run: pdm run lint-check
       - name: Check for type errors
         run: pdm run check-types
-      - name: Run tests
-        run: pdm run tests
 

@@ -14,9 +14,11 @@ BASIC_INFO_QUESTIONS = [
     Select("style", "Logo Style", options=style_names, default_value="first_letter_underlined"),
 ]
 
+
 def handle_wizard_cancelled() -> None:
-        logger.error("Wizard cancelled by user.")
-        quit(0)
+    logger.error("Wizard cancelled by user.")
+    quit(0)
+
 
 @extra_command(params=[])
 @option("-t", "--no-tui", is_flag=True, help="Dont use the Textual Terminal User Interface")

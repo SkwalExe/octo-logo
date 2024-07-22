@@ -26,7 +26,7 @@ def get_text_size(text: str, font: FreeTypeFont) -> tuple[int, int]:
 
 
 def get_font_height(font: FreeTypeFont) -> int:
-    return font.getbbox("azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789")[3]
+    return int(font.getbbox("azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQASDFGHJKLMWXCVBN0123456789")[3])
 
 
 def remove_ext(filename: str) -> str:
