@@ -4,7 +4,6 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "octologo"
-version = "3.0.2"
 description = "Simple program that generates a logo for your open source projects."
 authors = [{name = "Leopold Koprivnik", email = "skwal@etik.com"}]
 readme = "README.md"
@@ -19,6 +18,11 @@ dependencies = [
     "click-extra>=4.7.2",
     "loguru>=0.7.2",
 ]
+dynamic = ["version"]
+
+[tool.pdm.version]
+source = "file"
+path = "src/octologo/__init__.py"
 
 [project.urls]
 Home = "https://github.com/SkwalExe/octo-logo"
