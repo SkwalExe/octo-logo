@@ -1,3 +1,8 @@
+# v3.1.0 - 2024-07-22
+
+### Changed
+- Now using the textual-wizard library instead of the prototype that was precedently used in this project.
+
 # v3.0.2 - 2024-06-14
 
 ### Fixed
